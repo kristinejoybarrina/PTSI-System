@@ -428,6 +428,15 @@ cursor: pointer;
     }
 }
 
+/* Appointment Indicators */
+.dot {
+    margin: 2px auto 0 auto;
+    width: 7px;
+    height: 7px;
+    background: #2196F3;
+    border-radius: 50%;
+}
+
 /* Hamburger icon (initially hidden) */
 .hamburger {
   position: relative;

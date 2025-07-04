@@ -8,7 +8,7 @@ let currentDate = new Date();
 
 // Toggle this to true to show appointment dots, false for date only
 const SHOW_APPOINTMENTS = true;
-// Example: appointmentsByDate['2025-07-10'] = [{title: 'Sample'}]
+
 let appointmentsByDate = {};
 
 function renderCalendar(date) {
