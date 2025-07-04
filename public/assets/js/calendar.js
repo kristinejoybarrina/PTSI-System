@@ -6,6 +6,11 @@ const nextMonth = document.getElementById('nextMonth');
 
 let currentDate = new Date();
 
+// Toggle this to true to show appointment dots, false for date only
+const SHOW_APPOINTMENTS = true;
+// Example: appointmentsByDate['2025-07-10'] = [{title: 'Sample'}]
+let appointmentsByDate = {};
+
 function renderCalendar(date) {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -16,20 +21,36 @@ function renderCalendar(date) {
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    let row = document.createElement('tr');
-    for (let i = 0; i < firstDay; i++) {
-        row.innerHTML += '<td></td>';
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-        if (row.children.length === 7) {
-            calendarBody.appendChild(row);
-            row = document.createElement('tr');
+    let day = 1;
+    for (let week = 0; week < 6; week++) { // Always 6 rows
+        let row = document.createElement('tr');
+        for (let d = 0; d < 7; d++) {
+            if (week === 0 && d < firstDay) {
+                row.innerHTML += '<td></td>';
+            } else if (day > daysInMonth) {
+                row.innerHTML += '<td></td>';
+            } else {
+                let cellContent = day;
+                if (SHOW_APPOINTMENTS) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    if (appointmentsByDate[dateStr]) {
+                        cellContent += '<div class="dot" title="' + appointmentsByDate[dateStr].length + ' appointment(s)"></div>';
+                    }
+                }
+                row.innerHTML += `<td>${cellContent}</td>`;
+                day++;
+            }
         }
-        row.innerHTML += `<td>${day}</td>`;
+        calendarBody.appendChild(row);
     }
+}
 
-    calendarBody.appendChild(row);
+// Add some CSS for the dot if not present
+if (!document.getElementById('calendar-dot-style')) {
+    const style = document.createElement('style');
+    style.id = 'calendar-dot-style';
+    style.innerHTML = `.dot { margin: 2px auto 0 auto; width: 7px; height: 7px; background: #2196F3; border-radius: 50%; }`;
+    document.head.appendChild(style);
 }
 
 prevMonth.addEventListener('click', () => { 
