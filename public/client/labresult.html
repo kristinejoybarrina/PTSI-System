@@ -44,8 +44,7 @@
     
     <div class="container">
         <!-- Header Section -->
-        <h1 class="header-title">
-            Shin Ryujin
+        <h1 class="header-title" id="patientName">
         </h1>
 
         <!-- Table Section -->
@@ -76,7 +75,7 @@
     <script src="../assets/js/menu.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
       
         const firebaseConfig = {
           apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
@@ -91,47 +90,77 @@
         const db = getFirestore(app);
       
         const code = sessionStorage.getItem("labResultCode");
-      
-        if (!code || !/^\d{6}$/.test(code)) {
-          alert("⚠️ Invalid or missing code. Redirecting...");
+        if (!code) {
+          alert("⚠️ No code found. Please enter your lab result code first.");
           window.location.href = "labresult-login.html";
-        } else {
-          try {
-            const labResultsRef = collection(db, "labResults");
-            const q = query(labResultsRef, where("resultCode", "==", code));
-            getDocs(q).then((snapshot) => {
-              if (snapshot.empty) {
-                alert("❌ No result found for this code.");
-                return;
-              }
-      
-              const labResultsBody = document.getElementById("labResultsBody");
-      
-              snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-      
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                  <td class="table-data-cell">#${data.laboratoryId}</td>
-                  <td class="table-data-cell">${data.date}</td>
-                  <td class="table-data-cell">${data.resultType}</td>
-                  <td class="table-data-cell">
-                    <a href="${data.pdfBase64}" class="download-link" target="_blank">
-                      View PDF <i class="fas fa-download download-icon"></i>
-                    </a>
-                  </td>
-                `;
-                labResultsBody.appendChild(row);
-      
-                // Optional: update patient name at top
-                document.querySelector(".header-title").textContent = data.patientName;
-              });
-            });
-          } catch (error) {
-            console.error("Error loading lab result:", error);
-            alert("❌ Error loading lab result. Please try again.");
-          }
         }
+      
+        const snapshot = await getDocs(collection(db, "labResults"));
+        let match = null;
+      
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.resultCode === code) {
+            match = data;
+          }
+        });
+      
+        if (!match) {
+          alert("❌ Invalid code. No matching lab result found.");
+          window.location.href = "labresult-login.html";
+        }
+      
+        const tbody = document.getElementById("labResultsBody");
+        const row = document.createElement("tr");
+      
+        row.innerHTML = `
+        <td class="table-data-cell">
+          #${match.laboratoryId}
+        </td>
+        <td class="table-data-cell">
+          ${match.date}
+        </td>
+        <td class="table-data-cell">
+          ${match.resultType}
+        </td>
+        <td class="table-data-cell">
+          <a href="#" class="download-link">
+            labresult.pdf <i class="fas fa-download download-icon"></i>
+          </a>
+        </td>
+      `;
+      
+      
+      
+        tbody.appendChild(row);
+        document.getElementById("patientName").textContent = match.patientName;
+
+      
+        function downloadPDF(base64Data, filename) {
+          const base64 = base64Data.split(',')[1];
+          const binary = atob(base64);
+          const len = binary.length;
+          const buffer = new Uint8Array(len);
+          for (let i = 0; i < len; i++) {
+            buffer[i] = binary.charCodeAt(i);
+          }
+      
+          const blob = new Blob([buffer], { type: 'application/pdf' });
+          const blobURL = URL.createObjectURL(blob);
+      
+          const a = document.createElement('a');
+          a.href = blobURL;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      
+        row.querySelector(".download-link").addEventListener("click", (e) => {
+          e.preventDefault();
+          downloadPDF(match.pdfBase64, `LabResult-${match.resultCode}.pdf`);
+        });
       </script>
+      
 </body>
 </html>
