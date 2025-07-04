@@ -40,7 +40,10 @@
     
           <div class="header-icons">
             <span><img src="../assets/img/notif-icon.png"></span>
-            <span><img src="../assets/img/profile-icon.png"></span>
+            <span>
+              <img id="profileImage" src="../assets/img/profile-icon.png" alt="Profile" style="width: 32px; height: 32px; border-radius: 50%;" />
+            </span>
+            
           </div>
         </div>
     
@@ -68,7 +71,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
+  
     const firebaseConfig = {
       apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
       authDomain: "ptsi-project-48025.firebaseapp.com",
@@ -77,38 +80,42 @@
       messagingSenderId: "761002258561",
       appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
     };
-
+  
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+  
     window.onload = async () => {
-        const savedUsername = localStorage.getItem('loggedInUsername');
-        const usernameElement = document.getElementById('username');
-      
-        if (!usernameElement) return;
-      
-        if (savedUsername) {
-          try {
-            const q = query(collection(db, "registrationForm"), where("username", "==", savedUsername));
-            const snapshot = await getDocs(q);
-      
-            if (!snapshot.empty) {
-              const userData = snapshot.docs[0].data();
-              usernameElement.textContent = userData.firstname || savedUsername;
-            } else {
-              usernameElement.textContent = savedUsername;
-            }
-          } catch (error) {
-            console.error("🔥 Error fetching user data:", error);
-            usernameElement.textContent = savedUsername;
+      const savedUsername = localStorage.getItem('loggedInUsername');
+      const usernameElement = document.getElementById('username');
+      const profileImage = document.getElementById('profileImage');
+  
+      if (!savedUsername || !usernameElement || !profileImage) return;
+  
+      try {
+        const q = query(collection(db, "registrationForm"), where("username", "==", savedUsername));
+        const snapshot = await getDocs(q);
+  
+        if (!snapshot.empty) {
+          const userData = snapshot.docs[0].data();
+          usernameElement.textContent = userData.firstname || savedUsername;
+  
+          // ✅ SHOW the uploaded profile image
+          if (userData.imageBase64?.startsWith("data:image")) {
+            profileImage.src = userData.imageBase64;
+          } else {
+            profileImage.src = "../assets/img/profile-icon.png";
           }
         } else {
-          usernameElement.textContent = "Guest"; // <-- FIXED LINE
+          usernameElement.textContent = savedUsername;
+          profileImage.src = "../assets/img/profile-icon.png";
         }
-      };
-      
-
+      } catch (err) {
+        console.error("🔥 Error fetching profile image:", err);
+        profileImage.src = "../assets/img/profile-icon.png";
+      }
+    };
   </script>
+  
 
   <script>
     document.getElementById('logout')?.addEventListener('click', () => {
