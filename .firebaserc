@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "ptsi-project-48025"
-  }
+    "default": "ptsi-system",
+    "system": "ptsi-system",
+    "ptsi-project": "ptsi-project-48025"
+  },
+  "targets": {},
+  "etags": {}
 }
