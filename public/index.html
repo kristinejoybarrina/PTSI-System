@@ -106,7 +106,6 @@
           const user = doc.data();
           if (user.password === password) {
             authenticated = true;
-            alert("✅ Login successful!");
           
             // ✅ Save username to localStorage
             localStorage.setItem("loggedInUsername", username);
