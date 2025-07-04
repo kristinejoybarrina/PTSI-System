@@ -6,6 +6,7 @@
     <title>Profile</title>
     <link rel="stylesheet" href="../assets/css/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -35,12 +36,16 @@
             <div class="hamburger" id="hamburger">
               <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
             </div>
-            <div class="profile-title"><strong>Profile</strong></div>
+            <div class="dashboard-title"><strong>Profile</strong></div>
           </div>
     
           <div class="header-icons">
             <span><img src="../assets/img/notif-icon.png"></span>
-            <span><img src="../assets/img/profile-icon.png"></span>
+            <span>
+                <a href="profile.html">
+                    <img src="../assets/img/profile-icon.png">
+                </a>
+                </span>
           </div>
         </div>
     
@@ -48,18 +53,24 @@
 
     <div class="profile-container">
     <div class="profile-card">
-        <img src="assets/img/noprofil.jpg" alt="Profile Picture" id="profileImage" height="150" style="border-radius: 50%; border: 2px solid #ccc;">
+        <img src="../assets/img/noprofil.jpg" alt="Profile Picture" id="profileImage" height="150" style="border-radius: 50%; border: 2px solid #ccc;">
+        <div class="round">
+          <input type="file" id="fileInput" name="image" accept="image/*">
+          <i class="fa fa-camera"></i>
+        </div>        
         <h3>Name</h3>
-        <button class="edit-btn">Edit</button>
+        <button id="updateBtn">Update</button>
+        <button id="removeBtn" style="margin-top: 10px;">Remove</button>
     </div>
+    
     <div class="user-details">
         <h3>User details</h3>
         <label>Name:</label>
         <input type="text" readonly>
         <label>Email Address:</label>
         <input type="email" readonly>
-        <label>Birthday:</label>
-        <input type="date" readonly>
+        <label>Phone Number:</label>
+        <input type="number" readonly>
         <label>Age:</label>
         <input type="number" readonly>
         <label>Sex:</label>
@@ -81,5 +92,6 @@
     </div>
 
     <script src="../assets/js/menu.js"></script>
+    
 </body>
 </html>
