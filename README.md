@@ -31,11 +31,11 @@ To set up and run this project locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/PTSI-Project.git
+   git clone https://github.com/your-username/PTSI-System.git
    ```
 2. **Navigate to the project directory:**
    ```bash
-   cd wms-registration-form
+   cd PTSI-System
    ```
 3. **Install backend dependencies:**
    ```bash
