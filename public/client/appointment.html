@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Scheduling</title>
+    <link rel="stylesheet" href="../assets/css/appointment-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+        <h3>Menu</h3>
+        <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+        <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+        <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+              <div class="hamburger" id="hamburger">
+                <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
+              </div>
+              <div class="appointment-title"><strong>Appointment</strong></div>
+            </div>
+        <div class="header-icons">
+            <span><img src="../assets/img/notif-icon.png"></span>
+            <span><img src="../assets/img/profile-icon.png"></span>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <h2>Appointment Scheduling</h2>
+
+    <div class="step-nav">
+        <div class="step active">
+        <span>1</span>
+            Schedule an appointment
+        </div>
+        <div class="step">
+        <span>2</span>
+            Fill out Patient details
+        </div>
+    </div>
+
+    <div class="step-box">
+    <h3>Step 1</h3>
+    <p>Schedule an Appointment</p>
+
+    <form class="appointment-form" id="appointment-form">
+        <div class="form-group">
+        <br><label for="date">Preferred date of visit:</label>
+        <input type="date" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+        <br><label for="time">Preferred Time:</label>
+        <input type="time" id="time" name="time" required>
+        </div>
+
+        <!-- Move button here inside form -->
+        <div class="form-footer">
+          <button type="submit" class="next-button">Next</button>
+        </div>
+    </form>
+    </div>
+    <script src="../assets/js/menu.js"></script>
+</body>
+</html>
+

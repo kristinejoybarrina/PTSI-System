@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/dashboard-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+        <h3>Menu</h3>
+        <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+        <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+        <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+        
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <div class="hamburger" id="hamburger">
+              <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
+            </div>
+            <div class="dashboard-title"><strong>Dashboard</strong></div>
+          </div>
+    
+          <div class="header-icons">
+            <span><img src="../assets/img/notif-icon.png"></span>
+            <span><img src="../assets/img/profile-icon.png"></span>
+          </div>
+        </div>
+    
+    <h1><br>Welcome, <span id="username"></span>!</h1>
+
+    <div class="dashboard">
+        <div class="dashboard-content">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/DN100069-fix1-A-1.jpg" alt="PTSI Building" />
+            <h3>PTSI Patient Management System</h3>
+            <p>
+                The Philippine Tuberculosis Society, Inc. (PTSI) has been at the forefront of the fight against tuberculosis since 1910. 
+                With a strong commitment to eliminating TB, PTSI continues to improve the quality of life for Filipinos and contribute to the 
+                country's overall socio-economic development through accessible, patient-centered care and public health initiatives.
+            </p>
+        </div>
+    </div>
+
+    <div class="activity">
+        <div class="activity-icon"></div>
+            <h2>Recent Activities</h2>
+        </div>
+    </div>
+  </div>
+  <script src="../assets/js/menu.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+      authDomain: "ptsi-project-48025.firebaseapp.com",
+      projectId: "ptsi-project-48025",
+      storageBucket: "ptsi-project-48025.appspot.com",
+      messagingSenderId: "761002258561",
+      appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.onload = async () => {
+        const savedUsername = localStorage.getItem('loggedInUsername');
+        const usernameElement = document.getElementById('username');
+      
+        if (!usernameElement) return;
+      
+        if (savedUsername) {
+          try {
+            const q = query(collection(db, "registrationForm"), where("username", "==", savedUsername));
+            const snapshot = await getDocs(q);
+      
+            if (!snapshot.empty) {
+              const userData = snapshot.docs[0].data();
+              usernameElement.textContent = userData.firstname || savedUsername;
+            } else {
+              usernameElement.textContent = savedUsername;
+            }
+          } catch (error) {
+            console.error("🔥 Error fetching user data:", error);
+            usernameElement.textContent = savedUsername;
+          }
+        } else {
+          usernameElement.textContent = "Guest"; // <-- FIXED LINE
+        }
+      };
+      
+
+  </script>
+
+  <script>
+    document.getElementById('logout')?.addEventListener('click', () => {
+      localStorage.removeItem('loggedInUsername');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

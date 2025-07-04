@@ -1,0 +1,246 @@
+/* registration-style.css */
+
+body {
+  margin: 0;
+  font-family: 'Source Serif Pro', serif;
+  background: linear-gradient(to bottom, #00003a, #00003a);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#login-bg {
+  display: none;
+}
+
+/* Main container */
+.signup-container {
+  background: white;
+  max-width: 780px;
+  margin: 40px auto;
+  border-radius: 15px;
+  padding: 20px 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  height: 85vh;
+}
+
+/* Headings */
+.signup-container h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #04047a;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+
+/* Scrollbar styling */
+.signup-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.signup-container::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 5px;
+}
+
+.signup-container::-webkit-scrollbar-thumb {
+  background: #001aff; 
+  border-radius: 5px; 
+  border: 2px solid #e0e0e0; 
+}
+
+.signup-container::-webkit-scrollbar-thumb:hover {
+  background: #0000cc;
+}
+
+/* Form layout */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+.form-row > div {
+  flex: 1 1 250px;
+  min-width: 160px;
+  box-sizing: border-box;  
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; 
+}
+
+/* Optionally, ensure select dropdowns are consistent in height with input fields */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Profile upload section */
+.upload {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.upload img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #ccc;
+}
+
+.upload .round {
+  position: relative;
+  top: -40px;
+  left: 55%;
+  transform: translateX(-50%);
+  background: #6a6a6a;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;           
+  align-items: center;     
+  justify-content: center; 
+}
+
+.upload .round i {
+  color: white;
+  font-size: 15px; 
+}
+
+.upload input[type="file"] {
+  position: absolute;
+  transform: scale(2);
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Buttons */
+#removeBtn, .upload button {
+  margin: 5px 10px;
+  padding: 6px 14px;
+  font-weight: 780;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;;
+}
+
+#removeBtn {
+  background-color: #8b0000;
+}
+
+.upload button#removeBtn:hover {
+  background-color: #a10000;
+}
+
+.upload button#updateBtn {
+  background-color: #001aff;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button-row button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.button-row button[type="submit"] {
+  background-color: #001aff;
+  color: white;
+}
+
+.button-row button[type="reset"] {
+  background-color: #8b0000;
+  color: white;
+}
+
+.button-row button:hover {
+  opacity: 0.9;
+}
+
+/* Scroll styling */
+.signup-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.signup-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.signup-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.signup-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Input validation */
+input:invalid {
+  border-color: inherit;
+}
+
+input:valid {
+  border-color: inherit;
+}
+
+/* Add styles for touched invalid fields */
+input.touched:invalid {
+  border: 2px solid #ff3333;
+}
+
+input.touched:valid {
+  border: 1px solid #4CAF50;
+}
+
+/* Password strength indicator */
+.password-strength {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+/* Update password error styles */
+#password-error {
+  display: none;
+  color: #ff3333;
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: rgba(255, 51, 51, 0.1);
+}
+
+#password-error.visible {
+  display: block;
+}

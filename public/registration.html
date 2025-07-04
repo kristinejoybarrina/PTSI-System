@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="assets/css/registration-style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <div>
+    <form id="registrationForm" enctype="multipart/form-data">
+    <img src="assets/img/BG.png" alt="Philippine Tuberculosis Society Inc." id="login-bg">
+    <!-- Profile Upload Section -->
+    <div class="signup-container" id="signupContainer">
+      <h1>Registration Form</h1>
+      <h3>Welcome to the Philippine Tuberculosis Society Inc. (PTSI) Registration Page.</h3>
+      <p>Please fill out the form below to create your account.</p>
+      <div class="upload">
+        <img src="assets/img/noprofil.jpg" alt="Profile Picture" id="profileImage" height="150" style="border-radius: 50%; border: 2px solid #ccc;">
+        <div class="round">
+        <input type="file" id="fileInput" name="image" accept="image/*">
+          <i class="fa fa-camera"></i>
+        </div>
+        <button id="updateBtn">Update</button>
+        <button id="removeBtn" style="margin-top: 10px;">Remove</button>
+      </div>
+
+    <!-- Registration Form Section -->
+      <h1>Personal Information</h1>
+
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="middlename">Middle Name</label>
+            <input type="text" id="middlename" name="middlename">
+          </div>
+          <div style="flex: 1;">
+            <label for="suffix">Suffix Name</label>
+            <select id="suffix" name="suffix">
+              <option value="">-- Select Suffix --</option>
+              <option value="Jr.">Jr.</option>
+              <option value="Sr.">Sr.</option>
+              <option value="I">I</option>
+              <option value="II">II</option>
+              <option value="III">III</option>
+              <option value="IV">IV</option>
+              <option value="V">V</option>
+              <option value="VI">VI</option>
+              <option value="VII">VII</option>
+              <option value="VIII">VIII</option>
+              <option value="N/A">N/A</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+              <option value="">-- Select Gender --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Prefer Not to Say">Prefer Not to Say</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" required>
+          </div>
+        </div>
+
+        <h1>Home Address Details</h1>
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="street">Blk / Street Name</label>
+            <input type="text" id="street" name="street" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="region">Region</label>
+            <select id="region" name="region" required>
+              <option value="">-- Select Region --</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label for="province">Province</label>
+            <select id="province" name="province" required>
+              <option value="">-- Select Province --</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label for="city">City/Municipality</label>
+            <select id="city" name="city" required>
+              <option value="">-- Select City/Municipality --</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label for="barangay">Barangay</label>
+            <select id="barangay" name="barangay" required>
+              <option value="">-- Select Barangay --</option>
+            </select>
+          </div>
+        </div>
+
+        <h1>Login Credentials</h1>
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="regPassword">Password:</label>
+            <input type="password" id="regPassword" name="password" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+          </div>
+        </div>
+
+        <h1>Emergency Contact Information</h1>
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="emergencyName">Name of Emergency Contact</label>
+            <input type="text" id="emergencyName" name="emergencyName" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="relationship">Relationship</label>
+            <input type="text" id="relationship" name="relationship" required>
+          </div>
+          <div style="flex: 1;">
+            <label for="emergencyNumber">Contact Number</label>
+            <input type="text" id="emergencyNumber" name="emergencyNumber" required>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="reset">Cancel</button>
+          <button type="submit" id="submitBtn">Register</button>
+        </div>
+      </form>
+      <p>Already have an account? <a href="login.html">Login Here.</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="register.js"></script>
+  <script src="registration.js"></script>
+</body>
+</html>

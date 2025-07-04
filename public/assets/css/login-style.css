@@ -1,0 +1,418 @@
+/* Base styles (Desktop default) */
+body {
+  font-family: 'Source Serif Pro', serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#login-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.login-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 425px;
+  height: 100vh;
+  background: #ffffff;
+  padding: 160px 64px;
+  box-shadow: 0px 0 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+form {
+  width: 100%;
+}
+
+.login-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+#PTSI-logo {
+  width: 75px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+h1.login-text {
+  font-size: 32px;
+  color: #000000;
+  margin: 0;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 85%;
+  padding: 16px;
+  margin: 10px auto 16px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  display: block;
+}
+
+input::placeholder {
+  font-family: 'Source Serif Pro', serif;
+  font-size: 16px;
+  color: #888;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button {
+  width: 93%;
+  padding: 16px;
+  margin: 56px auto 8px auto;
+  border-radius: 8px;
+  font-size: 16px;
+  display: block;
+  background-color: #000099;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  font-family: 'Source Serif Pro', serif;
+}
+
+button:hover {
+  background-color: #000000;
+}
+
+a {
+  color: #0056b3;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Input Groups */
+.input-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#togglePassword {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    height: 4px;
+    margin-top: 5px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.strength-1 { background-color: #ff4444; width: 25%; }
+.strength-2 { background-color: #ffbb33; width: 50%; }
+.strength-3 { background-color: #00C851; width: 75%; }
+.strength-4 { background-color: #007E33; width: 100%; }
+
+/* Validation Messages */
+.validation-message {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    min-height: 1.2em;
+}
+
+.validation-message.valid {
+    color: #00C851;
+}
+
+.validation-message.invalid {
+    color: #ff4444;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* Loading Spinner */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Message Animations */
+.error-message, .success-message {
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+/* Remember Me Checkbox */
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.remember-me input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Links Section */
+.links {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.links a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+
+/* Mobile phones (up to 480px) */
+@media (max-width: 480px) {
+  body {
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    height: 100vh;           /* full viewport height */
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    overflow: visible;
+  }
+  
+  .login-container {
+    position: relative;
+    width: 87%;
+    max-width: 480px;
+    height: auto;
+    padding: 40px 24px;
+    box-shadow: none;
+    overflow: visible;
+    text-align: left;
+    display: block;
+    border-radius: 12px;
+    background: #fff;
+    margin: 0 auto;       /* Center horizontally */
+  }
+
+  #login-bg {
+    display: block;
+    background-image: url('../img/BG.png');
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  button {
+    width: 87%;            /* slightly bigger inputs and buttons */
+    margin: 10px 0;        /* adjusted margin */
+    padding: 14px 16px;    /* bigger padding */
+    font-size: 16px;       /* bigger font */
+    border-radius: 8px;    /* bigger radius */
+  }
+
+  h1.login-text {
+    font-size: 24px;       /* bigger heading */
+    margin-bottom: 20px;
+  }
+
+  #PTSI-logo {
+    width: 60px;           /* bigger logo */
+    margin-bottom: 16px;
+  }
+
+  .login-header {
+    margin-bottom: 32px;   /* more space */
+  }
+
+  button {
+    margin-top: 32px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  a {
+    font-size: 16px;
+  }
+}
+
+/* Tablets (481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .login-container {
+    position: absolute;
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    padding: 120px 40px;
+    box-shadow: 0px 0 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  #PTSI-logo {
+    width: 60px;
+  }
+
+  h1.login-text {
+    font-size: 28px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 90%;
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  button {
+    width: 90%;
+    padding: 14px;
+    font-size: 14px;
+    margin: 40px auto 8px auto;
+  }
+}
+
+/* Desktops (769px and up) */
+@media (min-width: 769px) {
+  /* Already styled as default */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+    }
+}

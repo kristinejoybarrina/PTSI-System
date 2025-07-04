@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../assets/css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+        <h3>Menu</h3>
+        <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+        <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+        <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+        
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+          <div class="header-left">
+            <div class="hamburger" id="hamburger">
+              <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
+            </div>
+            <div class="profile-title"><strong>Profile</strong></div>
+          </div>
+    
+          <div class="header-icons">
+            <span><img src="../assets/img/notif-icon.png"></span>
+            <span><img src="../assets/img/profile-icon.png"></span>
+          </div>
+        </div>
+    
+    <h1><br>Welcome, User!</h1>
+
+    <div class="profile-container">
+    <div class="profile-card">
+        <img src="assets/img/noprofil.jpg" alt="Profile Picture" id="profileImage" height="150" style="border-radius: 50%; border: 2px solid #ccc;">
+        <h3>Name</h3>
+        <button class="edit-btn">Edit</button>
+    </div>
+    <div class="user-details">
+        <h3>User details</h3>
+        <label>Name:</label>
+        <input type="text" readonly>
+        <label>Email Address:</label>
+        <input type="email" readonly>
+        <label>Birthday:</label>
+        <input type="date" readonly>
+        <label>Age:</label>
+        <input type="number" readonly>
+        <label>Sex:</label>
+        <input type="text" readonly>
+    </div>
+    </div>
+
+    <div class="mobile-app-section">
+        <div>
+            <h4>Mobile App</h4>
+            <p><strong>QR code for mobile app access</strong></p>
+            <p>This site has mobile app access enabled.</p>
+            <a href="#">Download the mobile app.</a>
+        </div>
+        <div>
+            <p>Scan the QR code with your mobile app to fill in the site URL in your app.</p>
+            <img src="../assets/img/qr-code.png" alt="QR Code" width="120">
+        </div>
+    </div>
+
+    <script src="../assets/js/menu.js"></script>
+</body>
+</html>

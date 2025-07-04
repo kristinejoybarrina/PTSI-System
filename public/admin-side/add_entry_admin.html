@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Result</title>
+    <link rel="stylesheet" href="../assets/css/add_entry_admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+        <h3>Menu</h3>
+        <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+        <li id="user-account"><i class="icon"><img src="../assets/img/account-icon.png"></i><h3>User Account</h3></li>
+        <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+        <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+        
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+              <div class="hamburger" id="hamburger">
+                <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
+              </div>
+              <div class="labresult-title"><strong>Input Lab Result</strong></div>
+            </div>
+            <div class="header-icons">
+                <span id="notificationBell" class="notification-bell">
+                    <img src="../assets/img/notif-icon.png" alt="Notification Icon">
+                </span>
+                <span><img src="../assets/img/profile-icon.png" alt="Profile Icon"></span>
+            </div>
+        </div>
+
+        <div id="notificationDropdown" class="notification-dropdown">
+            <div class="notification-header">
+                <h3>Notifications</h3>
+            </div>
+            <div id="notificationItems" class="notification-items"></div>
+            <div class="all-notifications-link-container">
+                <a href="#" class="all-notifications-link">See all</a>
+            </div>
+        </div>
+    
+    <h1><br>Input Lab Result</h1>
+
+    <div class="lab-result-form">
+        <a href="lab_result_admin.html" span class="back-icon">&#8592;</span></a>
+
+        <h2>Result Entry <span style="color:#0a1b52;">#1</span></h2>
+
+        <label>Patient's Name</label>
+        <input type="text" placeholder="Enter name">
+
+        <label>Laboratory ID</label>
+        <input type="text" placeholder="Enter ID">
+
+        <label>Date</label>
+        <input type="date">
+
+        <label>Type of Result</label>
+        <input type="text" placeholder="Type of result">
+
+        <label>Upload PDF</label>
+        <input type="file">
+
+        <div class="form-buttons">
+            <button class="add-btn">Add Another Result</button>
+            <button class="save-btn">Save Input Result</button>
+        </div>
+    </div>    
+    <script src="../assets/js/menu.js"></script>
+</body>
+</html>

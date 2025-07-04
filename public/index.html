@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="assets/css/login-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div>
+        <img src="assets/img/login-bg.png" alt="Philippine Tuberculosis Society Inc." id="login-bg">
+        <div class="login-container" id="loginContainer">
+            <div class="login-header">
+                <img src="assets/img/PTSILogo.png" alt="Philippine Tuberculosis Society Inc. Logo" id="PTSI-logo">
+                <h1 class="login-text">Patient's Login</h1>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Username" required 
+                           aria-label="Username" autocomplete="username">
+                    <div class="validation-message" id="username-validation"></div>
+                </div>
+                
+                <div class="input-group">
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Password" required 
+                               aria-label="Password" autocomplete="current-password">
+                        <button type="button" id="togglePassword" aria-label="Toggle password visibility">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="password-strength"></div>
+                    <div class="validation-message" id="password-validation"></div>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" id="loginButton">Login</button>
+                
+                <div class="links">
+                    <a href="#" id="forgotPassword">Forgot Password?</a>
+                    <p>Don't have an account? <a href="registration.html">Register Here.</a></p>
+                </div>
+            </form>
+            <div id="responseMessage" class="response-message" role="alert" aria-live="polite"></div>
+        </div>
+
+        <!-- Password Reset Modal -->
+        <div id="resetModal" class="modal" role="dialog" aria-labelledby="resetModalTitle" aria-hidden="true">
+            <div class="modal-content">
+                <h2 id="resetModalTitle">Reset Password</h2>
+                <form id="resetForm">
+                    <input type="email" id="resetEmail" name="email" placeholder="Enter your email" required>
+                    <button type="submit">Send Reset Link</button>
+                </form>
+                <button class="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Load our scripts -->
+      <!-- Firebase (as module) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+      authDomain: "ptsi-project-48025.firebaseapp.com",
+      projectId: "ptsi-project-48025",
+      storageBucket: "ptsi-project-48025.appspot.com",
+      messagingSenderId: "761002258561",
+      appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Login logic
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;      
+
+      try {
+        const q = query(collection(db, "registrationForm"), where("username", "==", username));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          alert("❌ Invalid username or password");
+          return;
+        }
+
+        let authenticated = false;
+        querySnapshot.forEach((doc) => {
+          const user = doc.data();
+          if (user.password === password) {
+            authenticated = true;
+            alert("✅ Login successful!");
+          
+            // ✅ Save username to localStorage
+            localStorage.setItem("loggedInUsername", username);
+          
+            window.location.href = "client/dashboard.html";
+          }
+        });
+
+        if (!authenticated) {
+          alert("❌ Invalid username or password");
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        alert("Something went wrong during login.");
+      }
+    });
+  </script>
+    <script src="js/utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

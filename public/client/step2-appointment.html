@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Scheduling</title>
+    <link rel="stylesheet" href="../assets/css/step2-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+            <h3>Menu</h3>
+            <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+            <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+            <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div><strong>Appointment Scheduling</strong></div>
+            <div class="header-icons">
+                <span><img src="../assets/img/notif-icon.png" alt="Notification Icon"></span>
+                <span><img src="../assets/img/profile-icon.png" alt="Profile Icon"></span>
+            </div>
+        </div>
+
+        <h2>Appointment Scheduling</h2>
+
+        <div class="step-nav">
+            <div class="step">
+                <span>1</span>
+                Schedule an appointment
+            </div>
+            <div class="step active">
+                <span>2</span>
+                Fill out Patient details
+            </div>
+        </div>
+
+        <form id="details" enctype="multipart/form-data">
+            <div class="step-box">
+                <h3>Step 2</h3>
+                <p>Fill out Patient details</p>
+
+                <div class="form-row">
+                    <div style="flex: 1;">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" id="lastname" name="lastname" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="middlename">Middle Name</label>
+                        <input type="text" id="middlename" name="middlename">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="suffix">Suffix Name</label>
+                        <select id="suffix" name="suffix">
+                            <option value="">-- Select Suffix --</option>
+                            <option value="Jr.">Jr.</option>
+                            <option value="Sr.">Sr.</option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                            <option value="VII">VII</option>
+                            <option value="VIII">VIII</option>
+                            <option value="N/A">N/A</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div style="flex: 1;">
+                        <label for="birth">Date of Birth</label>
+                        <input type="date" id="birth" name="birth" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">-- Select Gender --</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div style="flex: 1;">
+                        <label for="region">Region</label>
+                        <select id="region" name="region" required>
+                            <option value="">-- Select Region --</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="province">Province</label>
+                        <select id="province" name="province" required>
+                            <option value="">-- Select Province --</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="city">City/Municipality</label>
+                        <select id="city" name="city" required>
+                            <option value="">-- Select City/Municipality --</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="barangay">Barangay</label>
+                        <select id="barangay" name="barangay" required>
+                            <option value="">-- Select Barangay --</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="street">Blk / Street Name</label>
+                        <input type="text" id="street" name="street" required>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                     <a href="appointment.html" class="back-button">Back</a>
+                    <button id="bookBtn" type="submit" class="submit-button">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<script src="../assets/js/menu.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', loadAddressData);
+</script>
+</body>
+</html>

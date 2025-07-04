@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratory Result</title>
+    <link rel="stylesheet" href="../assets/css/labresult-login-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://philtbsociety.org/wp-content/uploads/2022/07/cropped-1-PTSI-New-Logo-Original-1-600x786.png" alt="PTSI Logo" class="logo">
+            <h2>PTSI</h2>
+            <div class="sidebar-toggle" id="toggleSidebar">
+                <img src="../assets/img/arrow-left.png" alt="Hide Sidebar">
+            </div>
+        </div>
+        <ul class="menu">
+            <h3>Menu</h3>
+            <li id="dashboard"><i class="icon"><img src="../assets/img/dash-icon.png"></i><h3>Dashboard</h3></li>
+            <li id="lab-result"><i class="icon"><img src="../assets/img/lab-result-icon.png"></i><h3>Lab Result</h3></li>
+            <li id="appointment"><i class="icon"><img src="../assets/img/appointment-icon.png"></i><h3>Appointment</h3></li>
+        </ul>
+        <div class="logout" id="logout">
+            <img src="../assets/img/logout-icon.png" alt="Logout Icon">
+            <h3>Logout</h3>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-left">
+              <div class="hamburger" id="hamburger">
+                <img src="../assets/img/hamburger-icon.png" alt="Menu"/>
+              </div>
+              <div class="labresult-login-title"><strong>Laboratory Result</strong></div>
+            </div>
+            <div class="header-icons">
+                <span id="notificationBell" class="notification-bell">
+                    <img src="../assets/img/notif-icon.png" alt="Notification Icon">
+                </span>
+                <span><img src="../assets/img/profile-icon.png" alt="Profile Icon"></span>
+            </div>
+        </div>
+
+        <div id="notificationDropdown" class="notification-dropdown">
+            <div class="notification-header">
+                <h3>Notifications</h3>
+            </div>
+            <div id="notificationItems" class="notification-items"></div>
+            <div class="all-notifications-link-container">
+                <a href="#" class="all-notifications-link">See all</a>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="dashboard-content">
+                <h3>Laboratory Verification</h3>
+            </div>
+            <form id="labresultCode">
+                <input type="text" id="labresult-code" name="code" placeholder="Enter your code here" required>
+                <button type="submit">Verify</button>
+            </form>
+        </div>
+
+        <div id="instruction-container">
+            <div id="left-instruction">
+                <h3>Instructions</h3>
+                <p>1. Check your receipt.</p>
+                <p>2. Look for the laboratory code indicated in the receipt.</p>
+                <p>3. Copy the code and enter it to the laboratory verification.</p>
+                <p>4. Click verify button.</p>
+                <p>5. Finally, you can download the laboratory result.</p>
+            </div>
+            <div id="right-instruction">
+                <h3>Panuto</h3>
+                <p>1. Tingnan ang resibo.</p>
+                <p>2. Hanapin ang "laboratory code" na nakalagay sa resibo.</p>
+                <p>3. Kopyahin ang code at ilagay sa loob ng laboratory verification.</p>
+                <p>4. Pindutin ang "verify".</p>
+                <p>5. Sa wakas, nakapaglogin ka na at maaari mo na i-download ang pdf file ng iyong result.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/menu.js"></script>
+</body>
+</html>
