@@ -96,13 +96,31 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const tableBody = document.querySelector(".user-table tbody");
+    const searchInput = document.querySelector(".search-bar");
+    let allResults = [];
   
     async function loadLabResults() {
       const querySnapshot = await getDocs(collection(db, "labResults"));
-      tableBody.innerHTML = ""; // Clear existing rows
+      allResults = [];
   
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
+        data.id = docSnap.id;
+        allResults.push(data);
+      });
+  
+      renderResults(allResults);
+    }
+  
+    function renderResults(results) {
+      tableBody.innerHTML = "";
+  
+      if (results.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6">No lab results found</td></tr>`;
+        return;
+      }
+  
+      results.forEach(data => {
         const row = document.createElement("tr");
   
         row.innerHTML = `
@@ -114,19 +132,17 @@
             ${data.pdfBase64 ? `
               <a href="#" class="download-link" data-base64="${data.pdfBase64}">
                 DOWNLOAD PDF <img src="../assets/img/download-icon.png" alt="Download" class="download-icon" style="width:16px;height:16px;vertical-align:middle;margin-left:4px;">
-              </a>
-            ` : "No file"}
+              </a>` : "No file"}
           </td>
           <td>
-            <button class="edit-btn" data-id="${docSnap.id}">Edit</button>
-            <button class="delete-btn" data-id="${docSnap.id}">Delete</button>
+            <button class="edit-btn" data-id="${data.id}">Edit</button>
+            <button class="delete-btn" data-id="${data.id}">Delete</button>
           </td>
         `;
   
         tableBody.appendChild(row);
       });
   
-      // Attach download event to each link
       document.querySelectorAll(".download-link").forEach(link => {
         link.addEventListener("click", (e) => {
           e.preventDefault();
@@ -156,6 +172,16 @@
       a.click();
       document.body.removeChild(a);
     }
+  
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = allResults.filter(item => {
+        const name = (item.patientName || "").toLowerCase();
+        const labId = (item.laboratoryId || "").toLowerCase();
+        return name.includes(query) || labId.includes(query);
+      });
+      renderResults(filtered);
+    });
   
     loadLabResults();
   </script>
