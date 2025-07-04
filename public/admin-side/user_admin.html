@@ -74,73 +74,85 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>#0017346</td>
-                    <td>Juan P. Dela Cruz</td>
-                    <td>juan@gmail.com</td>
-                    <td>2025-06-02</td>
-                    <td>
-                        <button class="view-btn">View</button>
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn">Delete</button>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 
     <script src="../assets/js/menu.js"></script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-      
-        const firebaseConfig = {
-          apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
-          authDomain: "ptsi-project-48025.firebaseapp.com",
-          projectId: "ptsi-project-48025",
-          storageBucket: "ptsi-project-48025.appspot.com",
-          messagingSenderId: "761002258561",
-          appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
-        };
-      
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-      
-        document.addEventListener("DOMContentLoaded", async () => {
-          const tbody = document.querySelector(".user-table tbody");
-          tbody.innerHTML = "";
-      
-          try {
-            const snapshot = await getDocs(collection(db, "registrationForm"));
-            if (snapshot.empty) {
-              tbody.innerHTML = `<tr><td colspan="5">No users found</td></tr>`;
-              return;
-            }
-      
-            snapshot.forEach((doc) => {
-              const user = doc.data();
-              const userId = doc.id; // Get Firestore document ID
-      
-              const row = `
-                <tr>
-                  <td>${userId}</td>
-                  <td>${user.firstname || ""} ${user.lastname || ""}</td>
-                  <td>${user.email || ""}</td>
-                  <td>
-                    <button class="view-btn">View</button>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                  </td>
-                </tr>`;
-              tbody.insertAdjacentHTML("beforeend", row);
-            });
-          } catch (err) {
-            console.error("Error fetching users:", err);
-            tbody.innerHTML = `<tr><td colspan="5">Error loading data</td></tr>`;
-          }
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    
+      const firebaseConfig = {
+        apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+        authDomain: "ptsi-project-48025.firebaseapp.com",
+        projectId: "ptsi-project-48025",
+        storageBucket: "ptsi-project-48025.appspot.com",
+        messagingSenderId: "761002258561",
+        appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+      };
+    
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+    
+      let allUsers = [];
+    
+      async function fetchUsers() {
+        const snapshot = await getDocs(collection(db, "registrationForm"));
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      }
+    
+      function renderUsers(users) {
+        const tbody = document.querySelector(".user-table tbody");
+        tbody.innerHTML = "";
+    
+        if (users.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5">No users found</td></tr>`;
+          return;
+        }
+    
+        users.forEach(user => {
+          const row = `
+            <tr>
+              <td>${user.id}</td>
+              <td>${user.firstname || ""} ${user.lastname || ""}</td>
+              <td>${user.email || ""}</td>
+              <td>${user.registrationDate || ""}</td>
+              <td>
+                <button class="view-btn">View</button>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+              </td>
+            </tr>`;
+          tbody.insertAdjacentHTML("beforeend", row);
         });
-      </script>
-      
+      }
+    
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          allUsers = await fetchUsers();
+          renderUsers(allUsers);
+    
+          // Search logic
+          const searchInput = document.querySelector(".search-bar");
+          searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const filtered = allUsers.filter(user => {
+              const fullName = `${user.firstname || ""} ${user.lastname || ""}`.toLowerCase();
+              const email = (user.email || "").toLowerCase();
+              return fullName.includes(query) || email.includes(query);
+            });
+            renderUsers(filtered);
+          });
+    
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          document.querySelector(".user-table tbody").innerHTML = `<tr><td colspan="5">Failed to load users</td></tr>`;
+        }
+      });
+    </script>
+    
+    
   
 </body>
 </html>
