@@ -75,6 +75,9 @@
         <label>Type of Result</label>
         <input type="text" placeholder="Type of result">
 
+        <label for="resultCode">Code</label>
+        <input type="text" id="resultCode" placeholder="Enter 6-digit code" maxlength="6" pattern="\d{6}" title="6-digit number only" required>        
+
         <label>Upload PDF</label>
         <input type="file">
 
@@ -84,5 +87,66 @@
         </div>
     </div>    
     <script src="../assets/js/menu.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+          authDomain: "ptsi-project-48025.firebaseapp.com",
+          projectId: "ptsi-project-48025",
+          storageBucket: "ptsi-project-48025.appspot.com",
+          messagingSenderId: "761002258561",
+          appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+        };
+      
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+      
+        // Helper to convert file to Base64
+        function toBase64(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result); // base64 string
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        }
+      
+        document.querySelector(".save-btn").addEventListener("click", async () => {
+          const name = document.querySelector("input[placeholder='Enter name']").value;
+          const labId = document.querySelector("input[placeholder='Enter ID']").value;
+          const date = document.querySelector("input[type='date']").value;
+          const resultType = document.querySelector("input[placeholder='Type of result']").value;
+          const resultCode = document.getElementById("resultCode").value;
+          const file = document.querySelector("input[type='file']").files[0];
+      
+          if (!name || !labId || !date || !resultType || !file) {
+            alert("Please fill in all fields and select a file.");
+            return;
+          }
+      
+          try {
+            const base64PDF = await toBase64(file);
+            const docRef = doc(collection(db, "labResults"));
+      
+            await setDoc(docRef, {
+              id: docRef.id,
+              patientName: name,
+              laboratoryId: labId,
+              date: date,
+              resultType: resultType,
+              resultCode: resultCode, // 🆕 Include the code
+              pdfBase64: base64PDF
+            });
+      
+            alert("✅ Lab result saved successfully!");
+          } catch (err) {
+            console.error("Error saving lab result:", err);
+            alert("❌ Failed to save lab result.");
+          }
+        });
+      </script>
+      
 </body>
 </html>

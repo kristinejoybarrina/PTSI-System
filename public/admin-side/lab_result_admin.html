@@ -94,5 +94,53 @@
     </div>
 
   <script src="../assets/js/menu.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+      authDomain: "ptsi-project-48025.firebaseapp.com",
+      projectId: "ptsi-project-48025",
+      storageBucket: "ptsi-project-48025.appspot.com",
+      messagingSenderId: "761002258561",
+      appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    const tableBody = document.querySelector(".user-table tbody");
+  
+    async function loadLabResults() {
+      const querySnapshot = await getDocs(collection(db, "labResults"));
+      tableBody.innerHTML = ""; // Clear existing rows
+  
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+  
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${data.laboratoryId || "-"}</td>
+          <td>${data.patientName || "-"}</td>
+          <td>${data.date || "-"}</td>
+          <td>${data.resultType || "-"}</td>
+          <td>
+            ${data.pdfBase64 ? `<a href="${data.pdfBase64}" target="_blank" class="download-link">
+              View File <img src="../assets/img/download-icon.png" alt="Download" class="download-icon" style="width:16px;height:16px;vertical-align:middle;margin-left:4px;">
+            </a>` : "No file"}
+          </td>
+          <td>
+            <button class="edit-btn" data-id="${docSnap.id}">Edit</button>
+            <button class="delete-btn" data-id="${docSnap.id}">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+  
+    loadLabResults();
+  </script>
+  
 </body>
 </html>

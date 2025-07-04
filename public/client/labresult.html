@@ -67,60 +67,71 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="table-data-cell">
-                            #0017346
-                        </td>
-                        <td class="table-data-cell">
-                            05-05-2025
-                        </td>
-                        <td class="table-data-cell">
-                            TB Lab Results
-                        </td>
-                        <td class="table-data-cell">
-                            <a href="#" class="download-link">
-                                lab.pdf <i class="fas fa-download download-icon"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="table-data-cell">
-                            #0017347
-                        </td>
-                        <td class="table-data-cell">
-                            05-06-2025
-                        </td>
-                        <td class="table-data-cell">
-                            X-Ray Scan
-                        </td>
-                        <td class="table-data-cell">
-                            <a href="#" class="download-link">
-                                xray.png <i class="fas fa-download download-icon"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="table-data-cell">
-                            #0017348
-                        </td>
-                        <td class="table-data-cell">
-                            05-07-2025
-                        </td>
-                        <td class="table-data-cell">
-                            Consultation Notes
-                        </td>
-                        <td class="table-data-cell">
-                            <a href="#" class="download-link">
-                                notes.docx <i class="fas fa-download download-icon"></i>
-                            </a>
-                        </td>
-                    </tr>
+                <tbody id="labResultsBody">
                 </tbody>
             </table>
         </div>
     </div>
 
     <script src="../assets/js/menu.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
+          authDomain: "ptsi-project-48025.firebaseapp.com",
+          projectId: "ptsi-project-48025",
+          storageBucket: "ptsi-project-48025.appspot.com",
+          messagingSenderId: "761002258561",
+          appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
+        };
+      
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+      
+        const code = sessionStorage.getItem("labResultCode");
+      
+        if (!code || !/^\d{6}$/.test(code)) {
+          alert("⚠️ Invalid or missing code. Redirecting...");
+          window.location.href = "labresult-login.html";
+        } else {
+          try {
+            const labResultsRef = collection(db, "labResults");
+            const q = query(labResultsRef, where("resultCode", "==", code));
+            getDocs(q).then((snapshot) => {
+              if (snapshot.empty) {
+                alert("❌ No result found for this code.");
+                return;
+              }
+      
+              const labResultsBody = document.getElementById("labResultsBody");
+      
+              snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+      
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td class="table-data-cell">#${data.laboratoryId}</td>
+                  <td class="table-data-cell">${data.date}</td>
+                  <td class="table-data-cell">${data.resultType}</td>
+                  <td class="table-data-cell">
+                    <a href="${data.pdfBase64}" class="download-link" target="_blank">
+                      View PDF <i class="fas fa-download download-icon"></i>
+                    </a>
+                  </td>
+                `;
+                labResultsBody.appendChild(row);
+      
+                // Optional: update patient name at top
+                document.querySelector(".header-title").textContent = data.patientName;
+              });
+            });
+          } catch (error) {
+            console.error("Error loading lab result:", error);
+            alert("❌ Error loading lab result. Please try again.");
+          }
+        }
+      </script>
 </body>
 </html>

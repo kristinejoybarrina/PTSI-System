@@ -86,5 +86,22 @@
     </div>
 
     <script src="../assets/js/menu.js"></script>
+    <script type="module">
+        document.getElementById("labresultCode").addEventListener("submit", (e) => {
+          e.preventDefault();
+      
+          const code = document.getElementById("labresult-code").value.trim();
+      
+          if (!/^\d{6}$/.test(code)) {
+            alert("❌ Please enter a valid 6-digit code.");
+            return;
+          }
+      
+          // Save the code in sessionStorage and redirect
+          sessionStorage.setItem("labResultCode", code);
+          window.location.href = "labresult.html"; // ⬅️ Redirect here
+        });
+      </script>
+       
 </body>
 </html>
