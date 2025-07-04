@@ -627,6 +627,19 @@ cursor: pointer;
   font-weight: bold;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 8px; /* spacing between buttons */
+  justify-content: center;
+  align-items: center;
+}
+
+.action-buttons button {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
 @media (max-width: 640px) {
   .sidebar {
     transform: translateX(-100%);

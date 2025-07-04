@@ -70,6 +70,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Registration Date</th>
+                    <th>Last Update</th> 
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -111,27 +112,39 @@
       function renderUsers(users) {
         const tbody = document.querySelector(".user-table tbody");
         tbody.innerHTML = "";
-    
+      
         if (users.length === 0) {
           tbody.innerHTML = `<tr><td colspan="5">No users found</td></tr>`;
           return;
         }
-    
+      
+        // 🔤 Sort users by LASTNAME alphabetically
+        users.sort((a, b) => {
+          const lnameA = (a.lastname || "").toUpperCase();
+          const lnameB = (b.lastname || "").toUpperCase();
+          return lnameA.localeCompare(lnameB);
+        });
+      
         users.forEach(user => {
+          const fullName = `${(user.lastname || "").toUpperCase()}, ${(user.firstname || "").toUpperCase()}`;
           const row = `
             <tr>
               <td>${user.id}</td>
-              <td>${user.firstname || ""} ${user.lastname || ""}</td>
+              <td>${fullName}</td>
               <td>${user.email || ""}</td>
-              <td>${user.registrationDate || ""}</td>
+              <td>${formatDate(user.registrationDate)}</td>
+              <td>${formatDate(user.lastUpdated)}</td>
               <td>
-                <button class="edit-btn" data-id="${user.id}">Edit</button>
-                <button class="delete-btn" data-id="${user.id}">Delete</button>
+                <div class="action-buttons">
+                  <button class="edit-btn" data-id="${user.id}">Edit</button>
+                  <button class="delete-btn" data-id="${user.id}">Delete</button>
+                </div>
               </td>
             </tr>`;
           tbody.insertAdjacentHTML("beforeend", row);
         });
       }
+      
     
       document.addEventListener("DOMContentLoaded", async () => {
         try {
@@ -183,6 +196,17 @@
           document.querySelector(".user-table tbody").innerHTML = `<tr><td colspan="5">Failed to load users</td></tr>`;
         }
       });
+
+      function formatDate(timestamp) {
+        if (!timestamp || !timestamp.seconds) return "";
+      
+        const date = new Date(timestamp.seconds * 1000);
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+      }
     </script>
   
 </body>

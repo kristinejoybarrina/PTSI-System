@@ -708,4 +708,13 @@ body {
     font-size: 28px;
     color: #0d3b7d;
   }
-    
+  
+  form#editUserForm input[type="number"],
+  form#editUserForm select {
+    width: 95%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
