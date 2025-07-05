@@ -356,11 +356,16 @@ cursor: pointer;
 .calendar-container {
     border: 1px solid #ccc;
     padding: 20px;
-    max-width: 1200px;
+    width: 100%;
+    max-width: none;
     background: #fff;
     border-radius: 5px;
-    text-align: center;
-    margin: 20px auto;
+    margin: 30px auto 0 auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .calendar-header {
@@ -368,37 +373,38 @@ cursor: pointer;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 15px;
+    width: 100%;
 }
 
 .calendar-header h2 {
-    margin: 0;
+    margin: 0 auto;
+    flex: 1;
+    text-align: center;
 }
 
-.calendar button {
-    background-color: #004080;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
+.calendar {
+    width: 100%;
 }
 
 .calendar table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    table-layout: fixed;
+    min-height: 300px; /* Ensures space for 6 weeks */
+    height: 300px;
 }
 
 .calendar th, .calendar td {
     padding: 10px;
-    padding-left: 60px;
-    padding-right: 75px;
     text-align: center;
     border: 1px solid #ddd;
+    word-break: break-word;
+    width: 14.28%;
 }
 
 .calendar td {
-    height: 50px;
+    height: 40px;
     vertical-align: middle;
 }
 
@@ -408,8 +414,27 @@ cursor: pointer;
     font-weight: bold;
 }
 
-#prevMonth {
-  color: #0a1b52;
+@media (max-width: 700px) {
+    .calendar-container {
+        max-width: 100%;
+        padding: 5px;
+    }
+    .calendar table {
+        min-width: 300px;
+    }
+    .calendar th, .calendar td {
+        padding: 4px;
+        font-size: 13px;
+    }
+}
+
+/* Appointment Indicators */
+.dot {
+    margin: 2px auto 0 auto;
+    width: 7px;
+    height: 7px;
+    background: #2196F3;
+    border-radius: 50%;
 }
 
 /* Hamburger icon (initially hidden) */
@@ -639,5 +664,4 @@ cursor: pointer;
 
 
 
-  
-  
+

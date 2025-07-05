@@ -1,10 +1,86 @@
 
+// Import security utilities
+import { validatePasswordStrength, hashPassword } from './js/security.js';
+
+// Add CSRF token to the registration form
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = auth.sessionManager.getCSRFToken();
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrf_token';
+    csrfInput.value = csrfToken;
+    
+    const registrationForm = document.querySelector('#signupContainer form');
+    if (registrationForm) {
+        registrationForm.appendChild(csrfInput);
+        
+        // Add password strength meter
+        const passwordInput = document.getElementById('regPassword');
+        if (passwordInput) {
+            const strengthMeter = document.createElement('div');
+            strengthMeter.id = 'password-strength-meter';
+            strengthMeter.style.marginTop = '5px';
+            strengthMeter.style.height = '5px';
+            strengthMeter.style.borderRadius = '3px';
+            passwordInput.insertAdjacentElement('afterend', strengthMeter);
+            
+            const strengthText = document.createElement('div');
+            strengthText.id = 'password-strength-text';
+            strengthText.style.fontSize = '0.8em';
+            strengthText.style.marginTop = '5px';
+            strengthMeter.insertAdjacentElement('afterend', strengthText);
+            
+            passwordInput.addEventListener('input', updatePasswordStrengthMeter);
+        }
+    }
+});
+
+// Update password strength meter
+function updatePasswordStrengthMeter() {
+    const password = this.value;
+    const strengthMeter = document.getElementById('password-strength-meter');
+    const strengthText = document.getElementById('password-strength-text');
+    
+    if (!password) {
+        strengthMeter.style.width = '0%';
+        strengthMeter.style.backgroundColor = 'transparent';
+        strengthText.textContent = '';
+        return;
+    }
+    
+    const result = validatePasswordStrength(password);
+    const width = (result.score / 5) * 100;
+    
+    let color, text;
+    if (result.score <= 1) {
+        color = '#ff4444'; // Red
+        text = 'Very Weak';
+    } else if (result.score <= 2) {
+        color = '#ffbb33'; // Orange
+        text = 'Weak';
+    } else if (result.score <= 3) {
+        color = '#00C851'; // Green
+        text = 'Good';
+    } else if (result.score <= 4) {
+        color = '#5cb85c'; // Darker Green
+        text = 'Strong';
+    } else {
+        color = '#5bc0de'; // Blue
+        text = 'Very Strong';
+    }
+    
+    strengthMeter.style.width = `${width}%`;
+    strengthMeter.style.backgroundColor = color;
+    strengthText.textContent = `Password Strength: ${text}`;
+    strengthText.style.color = color;
+}
+
 // Name registration
 document.querySelectorAll('input[name="firstname"], input[name="lastname"], input[name="middlename"], input[name="emergencyName"], input[name="relationship"]').forEach(input => {
     input.addEventListener('input', function () {
-      this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
     });
-  });
+});
 
 // Restrict phone/contact fields to numbers only
 document.querySelectorAll('input[name="phone"], input[name="emergencyNumber"]').forEach(input => {
@@ -30,78 +106,189 @@ function validatePostalCode(postal) {
     return /^\d{4}$/.test(postal);
 }
 
-// Enhanced registration form validation
-function validateRegistrationForm(event) {
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
-    const email = document.getElementById('email').value;
-    const address = document.getElementById('address').value;
-    const regPassword = document.getElementById('regPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const phone = document.getElementById('phone').value;
-    const age = document.getElementById('age').value;
-    const postal = document.getElementById('postal').value;
-    const emergencyNumber = document.getElementById('emergencyNumber').value;
-
-    // Check if required fields are filled
-    if (!firstname || !lastname || !email || !address || !regPassword || !confirmPassword || !phone || !age || !postal || !emergencyNumber) {
-        alert('Please fill in all required fields');
-        event.preventDefault();
+/**
+ * Enhanced registration form validation with security improvements
+ * @param {Event} event - The form submission event
+ * @returns {Promise<boolean>} True if validation passes
+ */
+async function validateRegistrationForm(event) {
+    // Prevent default form submission
+    event.preventDefault();
+    
+    // Get form elements
+    const form = event.target;
+    const formData = new FormData(form);
+    const csrfToken = formData.get('csrf_token');
+    
+    // Validate CSRF token
+    if (!auth.sessionManager.validateCSRFToken(csrfToken)) {
+        showError('Invalid request. Please refresh the page and try again.');
         return false;
     }
-
+    
+    // Get form values
+    const firstname = formData.get('firstname').trim();
+    const lastname = formData.get('lastname').trim();
+    const email = formData.get('email').trim().toLowerCase();
+    const address = formData.get('address').trim();
+    const regPassword = formData.get('regPassword');
+    const confirmPassword = formData.get('confirmPassword');
+    const phone = formData.get('phone').trim();
+    const age = formData.get('age');
+    const postal = formData.get('postal').trim();
+    const emergencyNumber = formData.get('emergencyNumber').trim();
+    
+    // Validate required fields
+    const requiredFields = {
+        'First Name': firstname,
+        'Last Name': lastname,
+        'Email': email,
+        'Address': address,
+        'Password': regPassword,
+        'Confirm Password': confirmPassword,
+        'Phone': phone,
+        'Age': age,
+        'Postal Code': postal,
+        'Emergency Number': emergencyNumber
+    };
+    
+    for (const [field, value] of Object.entries(requiredFields)) {
+        if (!value) {
+            showError(`Please fill in the ${field} field`);
+            return false;
+        }
+    }
+    
     // Validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-        alert('Please enter a valid email address');
-        event.preventDefault();
+        showError('Please enter a valid email address');
         return false;
     }
-
+    
     // Check if passwords match
     if (regPassword !== confirmPassword) {
-        alert('Passwords do not match!');
-        event.preventDefault();
+        showError('Passwords do not match!');
         return false;
     }
-
-    // Check password strength (at least 8 characters, containing numbers and letters)
-    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    if (!passwordPattern.test(regPassword)) {
-        alert('Password must be at least 8 characters long and contain both letters and numbers');
-        event.preventDefault();
+    
+    // Check password strength
+    const passwordStrength = validatePasswordStrength(regPassword);
+    if (!passwordStrength.isValid) {
+        showError('Password is not strong enough. Please use a combination of uppercase, lowercase, numbers, and special characters.');
         return false;
     }
-
+    
     // Validate phone number
     if (!validatePhoneNumber(phone)) {
-        alert('Please enter a valid Philippine phone number (e.g., 09123456789 or +639123456789)');
-        event.preventDefault();
+        showError('Please enter a valid Philippine phone number (e.g., 09123456789 or +639123456789)');
         return false;
     }
-
+    
     // Validate emergency contact number
     if (!validatePhoneNumber(emergencyNumber)) {
-        alert('Please enter a valid emergency contact number');
-        event.preventDefault();
+        showError('Please enter a valid emergency contact number');
         return false;
     }
-
+    
     // Validate age
     if (!validateAge(age)) {
-        alert('Age must be between 18 and 100 years old');
-        event.preventDefault();
+        showError('Age must be between 18 and 100 years old');
         return false;
     }
-
+    
     // Validate postal code
     if (!validatePostalCode(postal)) {
-        alert('Please enter a valid 4-digit postal code');
-        event.preventDefault();
+        showError('Please enter a valid 4-digit postal code');
         return false;
     }
+    
+    try {
+        // Hash the password before submission
+        const hashedPassword = await hashPassword(regPassword);
+        formData.set('regPassword', hashedPassword);
+        formData.delete('confirmPassword'); // Remove confirm password before submission
+        
+        // Submit the form data via fetch API
+        const response = await fetch(form.action || window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showSuccess('Registration successful! Redirecting to login...');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            showError(result.message || 'Registration failed. Please try again.');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        showError('An error occurred during registration. Please try again.');
+    }
+    
+    return false;
+}
 
-    return true;
+/**
+ * Display an error message to the user
+ * @param {string} message - The error message to display
+ */
+function showError(message) {
+    const errorDiv = document.getElementById('error-message') || createMessageElement('error-message', 'error');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    
+    // Scroll to the error message
+    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/**
+ * Display a success message to the user
+ * @param {string} message - The success message to display
+ */
+function showSuccess(message) {
+    const successDiv = document.getElementById('success-message') || createMessageElement('success-message', 'success');
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+}
+
+/**
+ * Create a message element if it doesn't exist
+ * @param {string} id - The ID for the element
+ * @param {string} type - The type of message (error/success)
+ * @returns {HTMLElement} The created message element
+ */
+function createMessageElement(id, type) {
+    const form = document.querySelector('form');
+    const existing = document.getElementById(id);
+    if (existing) return existing;
+    
+    const div = document.createElement('div');
+    div.id = id;
+    div.className = `alert alert-${type}`;
+    div.style.padding = '10px';
+    div.style.marginBottom = '15px';
+    div.style.borderRadius = '4px';
+    
+    if (type === 'error') {
+        div.style.backgroundColor = '#f8d7da';
+        div.style.color = '#721c24';
+        div.style.border = '1px solid #f5c6cb';
+    } else {
+        div.style.backgroundColor = '#d4edda';
+        div.style.color = '#155724';
+        div.style.border = '1px solid #c3e6cb';
+    }
+    
+    form.prepend(div);
+    return div;
 }
 
 // Add event listeners when DOM is loaded

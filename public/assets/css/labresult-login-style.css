@@ -157,7 +157,8 @@ transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .header-icons span {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   width: 30px;
   height: 30px;
   padding: 5px 5px;
@@ -170,7 +171,6 @@ transition: background-color 0.2s ease, color 0.2s ease;
   object-fit: contain;
   transition: all 0.3s ease;
 }
-
 
 /* Dashboard Section */
 .dashboard {

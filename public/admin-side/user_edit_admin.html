@@ -74,6 +74,65 @@
         <label>Phone:
         <input type="text" id="phone" name="phone" />
         </label><br/>
+        <label>Middlename:
+            <input type="text" id="middlename" name="middlename" />
+        </label><br/>
+        
+        <label>Suffix:
+        <input type="text" id="suffix" name="suffix" />
+        </label><br/>
+        
+        <label for="age">
+            Age:
+            <input type="number" id="age" name="age" />
+          </label><br/>
+          
+          <label for="gender">
+            Gender:
+            <select id="gender" name="gender">
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Prefer Not to Say">Prefer Not to Say</option>
+            </select>
+          </label><br/>
+                 
+        
+        <label>Street:
+        <input type="text" id="street" name="street" />
+        </label><br/>
+        
+        <label>Region:
+        <input type="text" id="region" name="region" />
+        </label><br/>
+        
+        <label>Province:
+        <input type="text" id="province" name="province" />
+        </label><br/>
+        
+        <label>City:
+        <input type="text" id="city" name="city" />
+        </label><br/>
+        
+        <label>Barangay:
+        <input type="text" id="barangay" name="barangay" />
+        </label><br/>
+        
+        <label>Emergency Contact Name:
+        <input type="text" id="emergencyName" name="emergencyName" />
+        </label><br/>
+        
+        <label>Relationship:
+        <input type="text" id="relationship" name="relationship" />
+        </label><br/>
+        
+        <label>Emergency Number:
+        <input type="text" id="emergencyNumber" name="emergencyNumber" />
+        </label><br/>
+        
+        <label>Username:
+        <input type="text" id="username" name="username" />
+        </label><br/>            
         <div class="form-button-container">
             <button type="submit">Update User</button>
           </div>
@@ -82,8 +141,14 @@
     <script src="../assets/js/menu.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    
+        import {
+          getFirestore,
+          doc,
+          getDoc,
+          updateDoc,
+          serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      
         const firebaseConfig = {
           apiKey: "AIzaSyDA_dVWeUjfgWTJHTIkIomj6ALtD_Lre6g",
           authDomain: "ptsi-project-48025.firebaseapp.com",
@@ -92,44 +157,71 @@
           messagingSenderId: "761002258561",
           appId: "1:761002258561:web:1fce70be6b73c1b628dd80"
         };
-    
+      
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-    
+      
         const userId = localStorage.getItem("editingUserId");
         const form = document.getElementById("editUserForm");
-    
+      
         if (!userId) {
           alert("No user selected for editing.");
-          window.location.href = "user-admin.html";
+          window.location.href = "user_admin.html";
         }
-    
+      
         async function populateForm() {
           const docRef = doc(db, "registrationForm", userId);
           const snapshot = await getDoc(docRef);
-    
+      
           if (snapshot.exists()) {
             const userData = snapshot.data();
-            document.getElementById("firstname").value = userData.firstname || "";
-            document.getElementById("lastname").value = userData.lastname || "";
-            document.getElementById("email").value = userData.email || "";
-            document.getElementById("phone").value = userData.phone || "";
+            form.firstname.value = userData.firstname || "";
+            form.lastname.value = userData.lastname || "";
+            form.middlename.value = userData.middlename || "";
+            form.suffix.value = userData.suffix || "";
+            form.email.value = userData.email || "";
+            form.age.value = userData.age || "";
+            form.gender.value = userData.gender || "";
+            form.phone.value = userData.phone || "";
+            form.street.value = userData.street || "";
+            form.region.value = userData.region || "";
+            form.province.value = userData.province || "";
+            form.city.value = userData.city || "";
+            form.barangay.value = userData.barangay || "";
+            form.emergencyName.value = userData.emergencyName || "";
+            form.relationship.value = userData.relationship || "";
+            form.emergencyNumber.value = userData.emergencyNumber || "";
+            form.username.value = userData.username || "";
           } else {
             alert("User not found.");
-            window.location.href = "user-admin.html";
+            window.location.href = "user_admin.html";
           }
         }
-    
+      
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
-    
+      
           const updatedData = {
             firstname: form.firstname.value,
             lastname: form.lastname.value,
+            middlename: form.middlename.value,
+            suffix: form.suffix.value,
             email: form.email.value,
+            age: form.age.value,
+            gender: form.gender.value,
             phone: form.phone.value,
+            street: form.street.value,
+            region: form.region.value,
+            province: form.province.value,
+            city: form.city.value,
+            barangay: form.barangay.value,
+            emergencyName: form.emergencyName.value,
+            relationship: form.relationship.value,
+            emergencyNumber: form.emergencyNumber.value,
+            username: form.username.value,
+            lastUpdated: serverTimestamp()
           };
-    
+      
           try {
             await updateDoc(doc(db, "registrationForm", userId), updatedData);
             alert("User updated successfully!");
@@ -139,9 +231,36 @@
             alert("Failed to update user.");
           }
         });
-    
+      
+        // ✅ Reset password button logic
+        document.addEventListener("DOMContentLoaded", () => {
+          const resetBtn = document.createElement("button");
+          resetBtn.type = "button";
+          resetBtn.id = "resetPasswordBtn";
+          resetBtn.textContent = "Reset Password";
+          resetBtn.style.marginLeft = "10px";
+          document.querySelector(".form-button-container").appendChild(resetBtn);
+      
+          resetBtn.addEventListener("click", async () => {
+            const confirmReset = confirm("Reset password to 'default123'?");
+            if (!confirmReset) return;
+      
+            try {
+              await updateDoc(doc(db, "registrationForm", userId), {
+                password: "default123",
+                lastUpdated: serverTimestamp()
+              });
+              alert("Password reset to 'default123'");
+            } catch (error) {
+              console.error("Failed to reset password:", error);
+              alert("Failed to reset password.");
+            }
+          });
+        });
+      
         populateForm();
       </script>
+      
   
 </body>
 </html>
