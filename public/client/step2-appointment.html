@@ -183,6 +183,11 @@
     document.getElementById('details').addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        // Get step 1 data from sessionStorage
+        const step1Data = sessionStorage.getItem('appointmentStep1');
+
+        const appointmentData = JSON.parse(step1Data);
+
         // Get values from form fields
         const lastname = document.getElementById('lastname').value;
         const firstname = document.getElementById('firstname').value;
@@ -200,10 +205,14 @@
       
 
     try {
-          const docRef = doc(collection(db, "patientInfo"));
+          const docRef = doc(collection(db, "patientSched"));
 
           const userData = {
             id: docRef.id,
+            // Step 1 data
+            prefTime: appointmentData.prefTime,
+            prefDate: appointmentData.prefDate,
+            //Step 2 data
             lastname: lastname,
             firstname: firstname,
             middlename: middlename,
@@ -223,8 +232,16 @@
 
           await setDoc(docRef, userData);
 
-          alert("✅ Appointment booking successful!");
-          document.getElementById('details').reset();
+        // Clear sessionStorage after successful submission
+        sessionStorage.removeItem('appointmentStep1');
+        sessionStorage.removeItem('appointmentStep2');
+
+            alert("✅ Appointment booking successful!");
+            document.getElementById('details').reset();
+
+            // Redirect to dashboard or confirmation page
+            window.location.href = 'dashboard.html';
+
         } catch (err) {
           console.error("❌ Appointment booking error:", err);
           alert("Something went wrong. Please try again.");

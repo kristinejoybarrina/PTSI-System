@@ -82,23 +82,16 @@
     </form>
     </div>
     <script src="../assets/js/menu.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-        // Firebase config
-        const firebaseConfig = {
-        apiKey: "AIzaSyCMK2EIUDf_N5K4qfe2G214gAgctoUAp3Q",
-        authDomain: "ptsi-system-293aa.firebaseapp.com",
-        projectId: "ptsi-system-293aa",
-        storageBucket: "ptsi-system-293aa.firebasestorage.app",
-        messagingSenderId: "229290736029",
-        appId: "1:229290736029:web:da2246786b173fddcd1774",
-        measurementId: "G-2CEM231Z6K"
-        };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    <script>
+     // Load saved data from sessionStorage when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedData = sessionStorage.getItem('appointmentStep1');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            document.getElementById('date').value = data.date || '';
+            document.getElementById('time').value = data.time || '';
+        }
+    });
 
     document.getElementById('appointment-form').addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -110,25 +103,18 @@
         alert("Please select both date and time.");
         return;
     }
-    try {
-          const docRef = doc(collection(db, "patientSched"));
 
-          const userData = {
-            id: docRef.id,
+        // Save to sessionStorage instead of database
+        const appointmentData = {
             prefTime: time,
             prefDate: date,
-            bookingDate: serverTimestamp(),
-            lastEdited: serverTimestamp()         
-          };
+            timestamp: new Date().toISOString()
+        };
 
-          await setDoc(docRef, userData);
-
-          alert("✅ Appointment booking successful!");
-          document.getElementById('appointment-form').reset();
-        } catch (err) {
-          console.error("❌ Appointment booking error:", err);
-          alert("Something went wrong. Please try again.");
-        }
+        sessionStorage.setItem('appointmentStep1', JSON.stringify(appointmentData));
+            
+        // Navigate to step 2
+        window.location.href = 'step2-appointment.html'; 
     }); 
     </script>
 </body>
