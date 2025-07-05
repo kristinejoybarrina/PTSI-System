@@ -82,6 +82,55 @@
     </form>
     </div>
     <script src="../assets/js/menu.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+        apiKey: "AIzaSyCMK2EIUDf_N5K4qfe2G214gAgctoUAp3Q",
+        authDomain: "ptsi-system-293aa.firebaseapp.com",
+        projectId: "ptsi-system-293aa",
+        storageBucket: "ptsi-system-293aa.firebasestorage.app",
+        messagingSenderId: "229290736029",
+        appId: "1:229290736029:web:da2246786b173fddcd1774",
+        measurementId: "G-2CEM231Z6K"
+        };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById('appointment-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+
+    if (!date || !time) {
+        alert("Please select both date and time.");
+        return;
+    }
+    try {
+          const docRef = doc(collection(db, "patientSched"));
+
+          const userData = {
+            id: docRef.id,
+            prefTime: time,
+            prefDate: date,
+            bookingDate: serverTimestamp(),
+            lastEdited: serverTimestamp()         
+          };
+
+          await setDoc(docRef, userData);
+
+          alert("✅ Appointment booking successful!");
+          document.getElementById('appointment-form').reset();
+        } catch (err) {
+          console.error("❌ Appointment booking error:", err);
+          alert("Something went wrong. Please try again.");
+        }
+    }); 
+    </script>
 </body>
 </html>
 

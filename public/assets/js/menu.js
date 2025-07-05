@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // APPOINTMENT FORM SUBMISSION
 
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
     const schedForm = document.getElementById('appointment-form');
     const appointForm = document.getElementById('details');
 
@@ -310,14 +310,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const schedData = new FormData(schedForm); 
 
-            fetch('/PTSI-Project/php/appointment.php', {
+            fetch('http://localhost:3000/step1-appointment.js', {
                 method: "POST",
                 body: schedData
             })
             .then(response => response.json())
             .then(data => { 
                 if (data.success) {
-                    window.location.href = data.redirect || '/PTSI-Project/client/step2-appointment.html';
+                    window.location.href = data.redirect || '/client/step2-appointment.html';
                 } else {
                     alert("Error storing session data.");
                 }
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const appointData = new FormData(appointForm); 
 
-            fetch('/PTSI-Project/php/step2-appointment.php', {
+            fetch('http://localhost:3000/step2-appointment.js', {
                 method: "POST",
                 body: appointData
             })
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.success) {
                     alert("Appointment booked successfully!");
-                    window.location.href = data.redirect || '/PTSI-Project/client/dashboard.html';
+                    window.location.href = data.redirect || '/client/dashboard.html';
                 } else {
                     alert("Unsuccessful booking");
                 }
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});
+}); */
 
 // Display username in dashboarddocument.addEventListener("DOMContentLoaded", () => {
     fetch('../php/username_display.php')

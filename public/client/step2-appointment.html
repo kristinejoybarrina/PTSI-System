@@ -162,5 +162,75 @@
 <script>
     document.addEventListener('DOMContentLoaded', loadAddressData);
 </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // Firebase config
+        const firebaseConfig = {
+        apiKey: "AIzaSyCMK2EIUDf_N5K4qfe2G214gAgctoUAp3Q",
+        authDomain: "ptsi-system-293aa.firebaseapp.com",
+        projectId: "ptsi-system-293aa",
+        storageBucket: "ptsi-system-293aa.firebasestorage.app",
+        messagingSenderId: "229290736029",
+        appId: "1:229290736029:web:da2246786b173fddcd1774",
+        measurementId: "G-2CEM231Z6K"
+        };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+   
+    document.getElementById('details').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Get values from form fields
+        const lastname = document.getElementById('lastname').value;
+        const firstname = document.getElementById('firstname').value;
+        const middlename = document.getElementById('middlename').value;
+        const suffix = document.getElementById('suffix').value;
+        const birth = document.getElementById('birth').value;
+        const age = document.getElementById('age').value;
+        const gender = document.getElementById('gender').value;
+        const phone = document.getElementById('phone').value;
+        const region = document.getElementById('region').value;
+        const province = document.getElementById('province').value;
+        const city = document.getElementById('city').value;
+        const barangay = document.getElementById('barangay').value;
+        const street = document.getElementById('street').value;
+      
+
+    try {
+          const docRef = doc(collection(db, "patientInfo"));
+
+          const userData = {
+            id: docRef.id,
+            lastname: lastname,
+            firstname: firstname,
+            middlename: middlename,
+            suffix: suffix,
+            birth: birth,
+            age: age,
+            gender: gender,
+            phone: phone,
+            region: region,
+            province: province,
+            city: city,
+            barangay: barangay,
+            street: street,
+            bookingDate: serverTimestamp(),
+            lastEdited: serverTimestamp()         
+          };
+
+          await setDoc(docRef, userData);
+
+          alert("✅ Appointment booking successful!");
+          document.getElementById('details').reset();
+        } catch (err) {
+          console.error("❌ Appointment booking error:", err);
+          alert("Something went wrong. Please try again.");
+        }
+    }); 
+</script>
+
 </body>
 </html>
